@@ -1,0 +1,6 @@
+select * from [BCMPWMT].[FULFMT_TYPE_LKP]
+select * from [BCMPWMT].[OFFR]
+select * from [BCMPWMT].[ORDER_LINE_CHRG]
+select * from [BCMPWMT].[ORDER_STS_MASTER_LKP]
+select * from [BCMPWMT].[ORG_BUSINESS_UNIT]
+select * from [BCMPWMT].[ORG_TYPE_LKP]
