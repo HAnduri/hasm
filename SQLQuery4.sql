@@ -3581,16 +3581,233 @@ REALM_ID  varchar(50)  NOT NULL									,
 VALID_CUST_IND  varchar(50)  NOT NULL							,
 DELTD_YN  varchar(50)  NOT NULL									,
 ACCT_ID  bigint  NOT NULL										,
-CUST_ID  int  NOT NULL											,
-TENANT_ORG_ID  int  NOT NULL									,
+CUST_ID_1  int  NOT NULL											,
+TENANT_ORG_ID_1  int  NOT NULL									,
 ACCT_STS_ID  int  NOT NULL										,
 ACCT_TYPE_ID  int  NOT NULL										,
 EMAIL  varchar(250)  NOT NULL									,
-VALID_CUST_IND  INT  NOT NULL									,
-CRE_DT  date  NOT NULL											,
-CRE_USER  varchar(250)  NOT NULL								,
-UPD_TS  datetime  NOT NULL										,
-UPD_USER  varchar(250)  NOT NULL								,
+VALID_CUST_IND_1  INT  NOT NULL									,
+CRE_DT_1  date  NOT NULL											,
+CRE_USER_1  varchar(250)  NOT NULL								,
+UPD_TS_1  datetime  NOT NULL										,
+UPD_USER_1  varchar(250)  NOT NULL								,
 Start_Date  datetime  NOT NULL									,
-End_Date  datetime  NOT NULL									,
-DELTD_YN  char(1)  NOT NULL							);
+End_Date  datetime  									,
+DELTD_YN_1  char(1)  NOT NULL							);
+truncate table DIM_CUST_ACCT_DETAILS_SQL_IN1542
+insert into DIM_CUST_ACCT_DETAILS_SQL_IN1542
+
+select 
+c.CUST_ID                
+,c.TENANT_ORG_ID
+,c.CUST_TYPE_ID
+,c.NICKNAME
+,c.SALUTE
+,c.MIDDLE_NM
+,c.CUST_TITLE
+,c.SUFFIX
+,c.WM_EMPLOYEE_ID
+,c.CRE_DT
+,c.CRE_USER
+,c.UPD_TS
+,c.UPD_USER
+,c.SIGNUP_TS
+,c.REALM_ID
+,c.VALID_CUST_IND
+,c.DELTD_YN
+,a.ACCT_ID
+,a.CUST_ID as CUST_ID_1
+,a.TENANT_ORG_ID as TENANT_ORG_ID_1
+,a.ACCT_STS_ID
+,a.ACCT_TYPE_ID
+,a.EMAIL
+,a.VALID_CUST_IND as VALID_CUST_IND_1
+,a.CRE_DT as CRE_DT_1
+,a.CRE_USER as CRE_USER_1
+,a.UPD_TS as upd_ts_1
+,a.UPD_USER as upd_user_1
+,a.Start_Date
+,a.End_Date
+,a.DELTD_YN as DELTD_YN_1
+from DIM_CUST_SQL_IN1542 c left join dim_CUST_ACCT_SQL_IN1542 a
+on c.CUST_ID  =a.CUST_ID
+-----------------row count----------------4975
+select count(*) from DIM_CUST_ACCT_DETAILS_SQL_IN1542
+select count(*) from (select 
+c.CUST_ID                
+,c.TENANT_ORG_ID
+,c.CUST_TYPE_ID
+,c.NICKNAME
+,c.SALUTE
+,c.MIDDLE_NM
+,c.CUST_TITLE
+,c.SUFFIX
+,c.WM_EMPLOYEE_ID
+,c.CRE_DT
+,c.CRE_USER
+,c.UPD_TS
+,c.UPD_USER
+,c.SIGNUP_TS
+,c.REALM_ID
+,c.VALID_CUST_IND
+,c.DELTD_YN
+,a.ACCT_ID
+,a.CUST_ID as CUST_ID_1
+,a.TENANT_ORG_ID as TENANT_ORG_ID_1
+,a.ACCT_STS_ID
+,a.ACCT_TYPE_ID
+,a.EMAIL
+,a.VALID_CUST_IND as VALID_CUST_IND_1
+,a.CRE_DT as CRE_DT_1
+,a.CRE_USER as CRE_USER_1
+,a.UPD_TS as upd_ts_1
+,a.UPD_USER upd_user_1
+,a.Start_Date
+,a.End_Date
+,a.DELTD_YN as DELTD_YN_1
+from DIM_CUST_SQL_IN1542 c left join dim_CUST_ACCT_SQL_IN1542 a
+on c.CUST_ID  =a.CUST_ID
+)s
+
+------------row count group by---------------
+select * from DIM_CUST_SQL_IN1542 
+select cre_user,count(*) from DIM_CUST_ACCT_DETAILS_SQL_IN1542 group by cre_user
+select cre_user, count(*) from (select 
+c.CUST_ID                
+,c.TENANT_ORG_ID
+,c.CUST_TYPE_ID
+,c.NICKNAME
+,c.SALUTE
+,c.MIDDLE_NM
+,c.CUST_TITLE
+,c.SUFFIX
+,c.WM_EMPLOYEE_ID
+,c.CRE_DT
+,c.CRE_USER
+,c.UPD_TS
+,c.UPD_USER
+,c.SIGNUP_TS
+,c.REALM_ID
+,c.VALID_CUST_IND
+,c.DELTD_YN
+,a.ACCT_ID
+,a.CUST_ID as CUST_ID_1
+,a.TENANT_ORG_ID as TENANT_ORG_ID_1
+,a.ACCT_STS_ID
+,a.ACCT_TYPE_ID
+,a.EMAIL
+,a.VALID_CUST_IND as VALID_CUST_IND_1
+,a.CRE_DT as CRE_DT_1
+,a.CRE_USER as CRE_USER_1
+,a.UPD_TS as upd_ts_1
+,a.UPD_USER upd_user_1
+,a.Start_Date
+,a.End_Date
+,a.DELTD_YN as DELTD_YN_1
+from DIM_CUST_SQL_IN1542 c left join dim_CUST_ACCT_SQL_IN1542 a
+on c.CUST_ID  =a.CUST_ID
+)s group by cre_user
+
+-----------------------duplicate check------------------
+select CUST_ID,count(*) from DIM_CUST_ACCT_DETAILS_SQL_IN1542  group by CUST_ID  having count(*)>1
+-------------------random record check-------------------------------------------
+select cre_user,salute from DIM_CUST_ACCT_DETAILS_SQL_IN1542 where cust_id=1987728795
+select cre_user,salute  from (select 
+c.CUST_ID                
+,c.TENANT_ORG_ID
+,c.CUST_TYPE_ID
+,c.NICKNAME
+,c.SALUTE
+,c.MIDDLE_NM
+,c.CUST_TITLE
+,c.SUFFIX
+,c.WM_EMPLOYEE_ID
+,c.CRE_DT
+,c.CRE_USER
+,c.UPD_TS
+,c.UPD_USER
+,c.SIGNUP_TS
+,c.REALM_ID
+,c.VALID_CUST_IND
+,c.DELTD_YN
+,a.ACCT_ID
+,a.CUST_ID as CUST_ID_1
+,a.TENANT_ORG_ID as TENANT_ORG_ID_1
+,a.ACCT_STS_ID
+,a.ACCT_TYPE_ID
+,a.EMAIL
+,a.VALID_CUST_IND as VALID_CUST_IND_1
+,a.CRE_DT as CRE_DT_1
+,a.CRE_USER as CRE_USER_1
+,a.UPD_TS as upd_ts_1
+,a.UPD_USER upd_user_1
+,a.Start_Date
+,a.End_Date
+,a.DELTD_YN as DELTD_YN_1
+from DIM_CUST_SQL_IN1542 c left join dim_CUST_ACCT_SQL_IN1542 a
+on c.CUST_ID  =a.CUST_ID
+)s where cust_id=1987728795
+------------------------column level check----------------
+select count(*) from DIM_CUST_ACCT_DETAILS_SQL_IN1542 t left join
+(select c.CUST_ID                
+,c.TENANT_ORG_ID
+,c.CUST_TYPE_ID
+,c.NICKNAME
+,c.SALUTE
+,c.MIDDLE_NM
+,c.CUST_TITLE
+,c.SUFFIX
+,c.WM_EMPLOYEE_ID
+,c.CRE_DT
+,c.CRE_USER
+,c.UPD_TS
+,c.UPD_USER
+,c.SIGNUP_TS
+,c.REALM_ID
+,c.VALID_CUST_IND
+,c.DELTD_YN
+,a.ACCT_ID
+,a.CUST_ID as CUST_ID_1
+,a.TENANT_ORG_ID as TENANT_ORG_ID_1
+,a.ACCT_STS_ID
+,a.ACCT_TYPE_ID
+,a.EMAIL
+,a.VALID_CUST_IND as VALID_CUST_IND_1
+,a.CRE_DT as CRE_DT_1
+,a.CRE_USER as CRE_USER_1
+,a.UPD_TS as upd_ts_1
+,a.UPD_USER upd_user_1
+,a.Start_Date
+,a.End_Date
+,a.DELTD_YN as DELTD_YN_1
+from DIM_CUST_SQL_IN1542 c left join dim_CUST_ACCT_SQL_IN1542 a
+on c.CUST_ID  =a.CUST_ID
+)s 
+on
+t.CUST_ID=s.CUST_ID_1
+
+where s.CUST_ID_1 is not null and (
+
+t.CUST_ID           <>            
+t.TENANT_ORG_ID		<>      
+t.CUST_TYPE_ID		<>      
+t.NICKNAME			<>      
+t.SALUTE			<>      
+t.MIDDLE_NM			<>      
+t.CUST_TITLE		<>      
+t.SUFFIX			<>      
+t.WM_EMPLOYEE_ID	<>      
+t.CRE_DT			<>      
+t.CRE_USER			<>      
+t.UPD_TS			<>      
+t.UPD_USER			<>      
+t.SIGNUP_TS			<>      
+t.REALM_ID			<>      
+t.VALID_CUST_IND	<>      
+t.DELTD_YN			<>      
+					<>      
+
+
+
+)
+----------------------FACT---------------------------
