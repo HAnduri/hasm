@@ -39,10 +39,11 @@ year_key int  identity(1,1) primary key,
 year_id int not null 
 )
 
-drop table dim_year_sq
+drop table dim_Year_sql_in1542
+TRUNCATE TABLE  dim_Year_sql_in1542
 
 insert into dim_Year_sql_in1542
-select distinct(year(Dates)) from Dates
+select distinct(year(Dates)) from dates_SQL_IN1542
 order by year(Dates)
 
 select * from dim_year_sql_in1542
@@ -55,11 +56,11 @@ year_id int not null
 foreign key (year_key) references dim_year_sql_in1542(year_key))
 
 
-truncate table dim_qtr_sql_in1542
+DROP TABLE dim_qtr_sql_in1542
 
 insert into dim_qtr_sql_in1542(quater_id,year_key,year_id)
 select distinct(datename(qq,d.dates)) as quater_id,y.year_key,y.year_id
-from dim_year_sql_in1542 y join dates d on y.year_key = d.year_id
+from dim_year_sql_in1542 y join dates_SQL_IN1542 d on y.year_key = d.year_id
 order by y.year_id
 
 select * from dim_qtr_sql_in1542
@@ -93,7 +94,7 @@ q.year_id
 from Dates_SQL_in1542 d join dim_qtr_sql_in1542 q on year(d.dates) = q.year_id and datepart(qq,d.dates) = q.quater_id
 order by year_id
 
-
+DROP TABLE Dim_month_sql_in1542
 
 select * from dates_sql_in1542
 select * from dim_year_sql_in1542
@@ -101,6 +102,9 @@ select * from dim_qtr_sql_in1542
 select * from Dim_month_sql_in1542
 select* from dim_week_sql_in1542
 select * from dim_day_sql_in1542
+
+
+
 
 create table dim_week_sql_in1542 
 (week_key int identity(1,1) primary key,
@@ -126,8 +130,8 @@ and datepart(qq,d.dates) = m.quater_id
 and datepart(mm,d.dates) = m.month_id
 order by year_id
 
-select * from dim_week
-drop table dim_week
+select * from dim_week_sql_in1542
+drop table dim_week_sql_in1542
 
 
 create table dim_day_sql_in1542
@@ -166,7 +170,7 @@ w.quater_key	,
 w.quater_id	,
 w.year_key		,
 w.year_id
-from dates d join dim_week_sql_in1542 w on year(d.dates) = w.year_id
+from dates_SQL_IN1542 d join dim_week_sql_in1542 w on year(d.dates) = w.year_id
 and datepart(qq,d.dates) = w.quater_id
 and datepart(mm,d.dates) = w.month_id
 and datepart(ww,d.dates) = w.week_id
@@ -178,11 +182,9 @@ order by year_id
 
 select * from dim_day_sql_in1542
 
+DROP TABLE dim_day_sql_in1542
 
-
-
-
-create table DIM_DAY_HOUR_sql_IN1552
+create table DIM_DAY_HOUR_sql_IN1542
 (Day_hour_key	int	IDENTITY,
 Day_key	int			,
 Date_id	date		,
@@ -198,14 +200,14 @@ year_id	int			,
 hour_id	int			,
 hour_key 	int )
 
-DROP TABLE DIM_DAY_HOUR_sql_IN1552
+DROP TABLE DIM_DAY_HOUR_sql_IN1542
 DROP TABLE hours_24
 
 create table hours_24
 (hours_24 int ,
 HOUR_KEY INT IDENTITY)
 
-drop table DIM_DAY_HOUR_sql_IN1552
+drop table DIM_DAY_HOUR_sql_IN1542
 exec  hours_1_24
 
 select * from hours_24
@@ -223,13 +225,15 @@ while @count <= 23
 
 exec hours_1_24
 
-select * from dim_day_SQL_IN1552
+select * from dim_day_SQL_IN1542
 
-select * from DIM_DAY_HOUR_sql_IN1552
+DROP TABLE dim_day_SQL_IN1542
 
-truncate table DIM_DAY_HOUR_sql_IN1552
+select * from DIM_DAY_HOUR_sql_IN1542
 
-insert into DIM_DAY_HOUR_sql_IN1552
+truncate table DIM_DAY_HOUR_sql_IN1542
+
+insert into DIM_DAY_HOUR_sql_IN1542
 (
 Day_key			,
 Date_id			,
@@ -257,8 +261,11 @@ d.Day_key
 ,d.Quarter_id
 ,d.year_key
 ,d.year_id
-,h.hours_24,h.hour_key
-from dim_day_SQL_IN1552 d cross join hours_24 h
+,h.hours_24,NULL
+from dim_day_SQL_IN1542 d cross join hours_24 h
 order by date_id asc
+
+
+
 
 
