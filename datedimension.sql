@@ -182,5 +182,83 @@ select * from dim_day_sql_in1542
 
 
 
+create table DIM_DAY_HOUR_sql_IN1552
+(Day_hour_key	int	IDENTITY,
+Day_key	int			,
+Date_id	date		,
+Day_id	int			,
+week_key	int		,
+Week_id	int			,
+Month_key	int		,
+Month_id	int		,
+Quarter_key	int		,
+Quarter_id	int		,
+year_key	int		,
+year_id	int			,
+hour_id	int			,
+hour_key 	int )
+
+DROP TABLE DIM_DAY_HOUR_sql_IN1552
+DROP TABLE hours_24
+
+create table hours_24
+(hours_24 int ,
+HOUR_KEY INT IDENTITY)
+
+drop table DIM_DAY_HOUR_sql_IN1552
+exec  hours_1_24
+
+select * from hours_24
+
+truncate table hours_24
+
+create procedure hours_1_24
+as
+declare @count int = 0
+while @count <= 23
+	begin 
+	insert into hours_24 values(@count)
+	set @count = @count +1
+	end
+
+exec hours_1_24
+
+select * from dim_day_SQL_IN1552
+
+select * from DIM_DAY_HOUR_sql_IN1552
+
+truncate table DIM_DAY_HOUR_sql_IN1552
+
+insert into DIM_DAY_HOUR_sql_IN1552
+(
+Day_key			,
+Date_id			,
+Day_id			,
+week_key		,
+Week_id			,
+Month_key		,
+Month_id		,
+Quarter_key		,
+Quarter_id		,
+year_key		,
+year_id			,
+hour_id	,
+HOUR_KEY)
+
+select 
+d.Day_key
+,d.Date_id
+,d.Day_id
+,d.week_key
+,d.Week_id
+,d.Month_key
+,d.Month_id
+,d.Quarter_key
+,d.Quarter_id
+,d.year_key
+,d.year_id
+,h.hours_24,h.hour_key
+from dim_day_SQL_IN1552 d cross join hours_24 h
+order by date_id asc
 
 
