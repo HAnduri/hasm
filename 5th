@@ -1,0 +1,86 @@
+
+insert into fact_RTN_ORDER_LINE_IN1553
+select 
+iif(o.RTN_ORDER_NUM is null or o.RTN_ORDER_NUM='Null' ,'N/A',ltrim(rtrim(o.RTN_ORDER_NUM        )))  as  RTN_ORDER_NUM,
+iif(o.RTN_LINE_NUM is null or o.  RTN_LINE_NUM='Null','N/A',ltrim(rtrim(o.RTN_LINE_NUM         )))  as  RTN_LINE_NUM ,
+iif(o.TENANT_ORG_ID is null or o.  TENANT_ORG_ID='Null'or o. TENANT_ORG_ID  like'%[A-Z]%',101,cast(ltrim(rtrim(o.TENANT_ORG_ID        ))as int))  as  TENANT_ORG_ID ,
+iif(o.SALES_ORDER_NUM is null or o.  SALES_ORDER_NUM='Null'or o. SALES_ORDER_NUM  like'%[A-Z]%',101,cast(ltrim(rtrim(SALES_ORDER_NUM ))as bigint))  as  SALES_ORDER_NUM ,
+iif(o.SALES_ORDER_LINE_NUM is null or o.  SALES_ORDER_LINE_NUM='Null'or o. SALES_ORDER_LINE_NUM  like'%[A-Z]%',101,cast(ltrim(rtrim(SALES_ORDER_LINE_NUM ))as int))  as  SALES_ORDER_LINE_NUM  ,
+iif(o.RCV_STORE_ORG_CD is null or o.  RCV_STORE_ORG_CD='Null','N/A',ltrim(rtrim(RCV_STORE_ORG_CD     )))  as  RCV_STORE_ORG_CD ,
+iif(o.RTN_QTY is null or o.  RTN_QTY='Null'or o. RTN_QTY  like'%[A-Z]%',0,cast(RTN_QTY as float))  as  RTN_QTY,
+iif(o.VIRT_RTN_IND is null or o.  VIRT_RTN_IND='Null'or o. VIRT_RTN_IND  like'%[A-Z]%',101,cast(ltrim(rtrim(VIRT_RTN_IND         ))as int))  as  VIRT_RTN_IND ,
+iif(o.AFFIDAVIT_SIGNUP_TS is null or o.  AFFIDAVIT_SIGNUP_TS='?'or o. AFFIDAVIT_SIGNUP_TS ='AFFIDAVIT_SIGNUP_TS'  or o.  AFFIDAVIT_SIGNUP_TS='NULL','01-01-1900',
+case when charindex('-',AFFIDAVIT_SIGNUP_TS) >0 then substring(cast(AFFIDAVIT_SIGNUP_TS as varchar),1,charindex('-',AFFIDAVIT_SIGNUP_TS)-1)
+else cast(o.AFFIDAVIT_SIGNUP_TS as date)
+end)  as  AFFIDAVIT_SIGNUP_TS ,
+iif(o.ITEM_EXPC_BACK_FLAG is null or o. ITEM_EXPC_BACK_FLAG='Null'or o. ITEM_EXPC_BACK_FLAG  ='ITEM_EXPC_BACK_FLAG',101,cast(ltrim(rtrim(o.ITEM_EXPC_BACK_FLAG))as int))  as  ITEM_EXPC_BACK_FLAG,
+
+iif(o.RTN_LINE_MODFD_TS is null or o. rTN_LINE_MODFD_TS='Null'or o. RTN_LINE_MODFD_TS  like'RTN_LINE_MODFD_TS','01-01-1900',
+case when charindex('-',rTN_LINE_MODFD_TS) >0 then substring(cast(rTN_LINE_MODFD_TS as varchar),1,charindex('-',rTN_LINE_MODFD_TS)-1)
+else cast(ltrim(rtrim(o.rTN_LINE_MODFD_TS ))as date )
+end)  as  rTN_LINE_MODFD_TS,
+
+iif(o.RTN_LINE_CRE_TS is null or o. rTN_LINE_CRE_TS='Null'or o. RTN_LINE_CRE_TS = 'RTN_LINE_CRE_TS','01-01-1900',
+case when charindex('-',RTN_LINE_CRE_TS) >0 then substring(cast(RTN_LINE_CRE_TS as varchar),1,charindex('-',RTN_LINE_CRE_TS)-1)
+else ltrim(rtrim(convert(datetime,o.RTN_LINE_CRE_TS)))
+end)  as  RTN_LINE_CRE_TS,
+iif(o.RFND_FLAG is null or o. rFND_FLAG='Null'or o. RFND_FLAG  like'%[A-Z]%',101,ltrim(rtrim(convert(int,o.RFND_FLAG))))  as  RFND_FLAG,
+iif(o.RTN_RSN_CD is null or o. rTN_RSN_CD='Null','N/A',ltrim(rtrim(o.RTN_RSN_CD )))  as  RTN_RSN_CD,
+iif(o.LINE_TOT_AMT is null or o. LINE_TOT_AMT='Null'or o. LINE_TOT_AMT  like'%[A-Z]%',0,convert(float,o.LINE_TOT_AMT     ))  as  LINE_TOT_AMT ,
+iif(o.OTHR_CHRG_AMT is null or o. OTHR_CHRG_AMT='Null'or  o. OTHR_CHRG_AMT like '?'or o. OTHR_CHRG_AMT  like'%[A-Z]%',0,ltrim(rtrim(convert(float,o.OTHR_CHRG_AMT ))))  as  OTHR_CHRG_AMT,
+iif(o.RTN_CENTER_ORG_CD is null or o. rTN_CENTER_ORG_CD='Null'or o. RTN_CENTER_ORG_CD like '?'or o. RTN_CENTER_ORG_CD  like'%[A-Z]%',101,ltrim(rtrim(convert(int,o.RTN_CENTER_ORG_CD))))  as  RTN_CENTER_ORG_CD,
+iif(SRC_CRE_TS is null or  SRC_CRE_TS='Null' or SRC_CRE_TS='?' or 'SRC_CRE_TS'=SRC_CRE_TS ,'01-01-1900',
+case when charindex('-',SRC_CRE_TS) >0 then substring(cast(SRC_CRE_TS as varchar),1,charindex('-',SRC_CRE_TS)-1)
+else ltrim(rtrim(convert(datetime,SRC_CRE_TS ))) 
+end ) as SRC_CRE_TS ,
+iif(o.SRC_UPD_TS is null or o. SRC_UPD_TS='Null'or o. SRC_UPD_TS  ='SRC_UPD_TS','01-01-1900',
+case when charindex('-',SRC_UPD_TS) >0 then substring(cast(SRC_UPD_TS as varchar),1,charindex('-',SRC_UPD_TS)-1)
+else ltrim(rtrim(convert(datetime,SRC_UPD_TS ))) 
+end )   as  SRC_UPD_TS ,
+iif(o.RTN_LINE_CRE_DT is null or o. rTN_LINE_CRE_DT='Null'or o. RTN_LINE_CRE_DT  like'%[A-Z]%','01-01-1900',ltrim(rtrim(convert(datetime,o.RTN_LINE_CRE_DT    )  )))  as  RTN_LINE_CRE_DT  ,
+iif(o.CATLG_ITEM_ID is null or o. CATLG_ITEM_ID='Null'or o. CATLG_ITEM_ID  like'%[A-Z]%',101,ltrim(rtrim(convert(int,o.CATLG_ITEM_ID  ) )))  as  CATLG_ITEM_ID,
+iif(o.UNIT_PRICE is null or o. UNIT_PRICE='Null'or o. UNIT_PRICE  like'%[A-Z]%',0,convert(float,UNIT_PRICE )   )  as  UNIT_PRICE ,
+iif(o.RTN_RSN_BUCKET is null or o. rTN_RSN_BUCKET='Null','N/A',ltrim(rtrim(RTN_RSN_BUCKET )))  as  RTN_RSN_BUCKET ,
+iif(o.RDC_ORG_ID is null or o. RDC_ORG_ID like '?'or  o. RDC_ORG_ID  like'%[A-Z]%',101.00,convert(float,RDC_ORG_ID  ))  as  RDC_ORG_ID,
+iif(o.ORDER_STS_ID is null or  o.ORDER_STS_ID  like'%[A-Z]%',101,convert(int,ORDER_STS_ID)  ) as  DER_STS_ID ,
+isnull(s.[STS_LKP_KEY],-1) as STS_LKP_KEY,
+isnull(p.[prod_key],-1) as PROD_KEY,
+isnull(l.[rsn_key],-1) as RSN_LKP_KEY,
+isnull(dh.day_hour_key,-1) as AFFIDAVIT_SIGNUP_TS_KEY,
+isnull(dh1.day_hour_key,-1)as RTN_LINE_MODFD_TS_KEY	 ,
+isnull(dh2.day_hour_key,-1)as RTN_LINE_CRE_TS_KEY	, 
+isnull(d.day_key,-1)as RTN_LINE_CRE_DT_KEY
+from  [BCMPWMT].[RTN_ORDER_LINE] o left join [IN1553].[DIM_STS_LKP_IN1553] s
+on iif(ORDER_STS_ID is null or  o.ORDER_STS_ID  like'%[A-Z]%',101,convert(int,ORDER_STS_ID)) = s.STS_ID
+left join [IN1553].[dim_prod_IN1553] p
+on iif(o.CATLG_ITEM_ID is null or o. CATLG_ITEM_ID='Null'or o. CATLG_ITEM_ID  like'%[A-Z]%',101,convert(int,o.CATLG_ITEM_ID))= p.CATLG_ITEM_ID
+left join [IN1553].[dim_RSN_LKP_IN1553] l on iif(RTN_RSN_CD is null or RTN_RSN_CD like'%[A-Z]%'  or o. rTN_RSN_CD='Null',101,convert(int,rTN_RSN_CD)) = l.RSN_ID  
+
+left join dim_day_hour dh1 on  iif(o.RTN_LINE_MODFD_TS is null or o. rTN_LINE_MODFD_TS='Null'or o. RTN_LINE_MODFD_TS  like'RTN_LINE_MODFD_TS','01-01-1900',
+case when charindex('-',rTN_LINE_MODFD_TS) >0 then convert(date,substring(cast(rTN_LINE_MODFD_TS as varchar),1,charindex('-',rTN_LINE_MODFD_TS)-1))
+else convert(date,o.rTN_LINE_MODFD_TS )end)= dh1.date_id 
+and dh1.hour_id = iif(o.RTN_LINE_MODFD_TS is null or o. rTN_LINE_MODFD_TS='Null'or o. RTN_LINE_MODFD_TS  like'RTN_LINE_MODFD_TS',-1,
+case when charindex('-',rTN_LINE_MODFD_TS) >0 then datepart (hour,convert(datetime,substring(cast(rTN_LINE_MODFD_TS as varchar),1,charindex('-',rTN_LINE_MODFD_TS)-1)))
+else datepart(hour,convert(datetime,o.RTN_LINE_MODFD_TS) ) end) 
+
+left join dim_day_hour dh on iif(o.AFFIDAVIT_SIGNUP_TS is null or o.  AFFIDAVIT_SIGNUP_TS='?'or o. AFFIDAVIT_SIGNUP_TS ='AFFIDAVIT_SIGNUP_TS'  or o.  AFFIDAVIT_SIGNUP_TS='NULL','01-01-1900',
+case when charindex('-',SRC_UPD_TS) >0 then convert(date,substring(cast(SRC_UPD_TS as varchar),1,charindex('-',SRC_UPD_TS)-1))
+else convert(date,o.AFFIDAVIT_SIGNUP_TS)
+end) = dh.date_id and 
+dh.hour_id = iif(o.AFFIDAVIT_SIGNUP_TS is null or o.  AFFIDAVIT_SIGNUP_TS='?'or o. AFFIDAVIT_SIGNUP_TS ='AFFIDAVIT_SIGNUP_TS' or o. AFFIDAVIT_SIGNUP_TS='NULL',-1,
+case when charindex('-',SRC_UPD_TS) >0 then datepart(hour,convert(datetime,substring(cast(SRC_UPD_TS as varchar),1,charindex('-',SRC_UPD_TS)-1)))
+else datepart(hour,convert(datetime,o.AFFIDAVIT_SIGNUP_TS) ) end)
+
+
+left join dim_day_hour dh2 on iif(o.RTN_LINE_CRE_TS is null or  o.RTN_LINE_CRE_TS='Null'  or o. RTN_LINE_CRE_TS  like'%[A-Z]%','01-01-1900',
+case when charindex('-',RTN_LINE_CRE_TS) >0 then convert(date,substring(cast(o.RTN_LINE_CRE_TS as varchar),1,charindex('-',RTN_LINE_CRE_TS)-1))
+else convert(datetime,o.RTN_LINE_CRE_TS)
+end) = dh2.date_id
+and dh2.hour_id = iif(o.RTN_LINE_CRE_TS is null   or o. RTN_LINE_CRE_TS  like'%[A-Z]%' or  o.RTN_LINE_CRE_TS='Null',-1, 
+case when charindex('-',RTN_LINE_CRE_TS) >0 then Datepart(hour,convert(datetime,substring(cast(o.RTN_LINE_CRE_TS as varchar),1,charindex('-',RTN_LINE_CRE_TS)-1)))
+else Datepart(hour,convert(datetime,o.RTN_LINE_CRE_TS))end )
+
+
+left join Dim_Day d on iif(o.RTN_LINE_CRE_DT is null  or o. RTN_LINE_CRE_DT  like'%[A-Z]%' or  o.RTN_LINE_CRE_DT='Null','01-01-1900',convert(date,o.RTN_LINE_CRE_DT)) =d.Date_ID
+
+
